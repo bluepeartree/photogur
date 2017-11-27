@@ -6,3 +6,30 @@
   <p> <%= picture.title %>, <%= picture.artist %> </p>
   <%= link_to(image_tag(picture.url), "/pictures/#{picture.id}")%>
 <% end %>
+
+<h2> older pictures </h2>
+
+<p> We have <%= @old_pictures.count %> pictures older than <%= @time%> </p>
+
+<% @old_pictures.each do |picture| %>
+  <p> <%= picture.title %>, <%= picture.artist %> </p>
+<% end %>
+
+
+<h2> Pictures by Year </h2>
+
+<% years = [] %>
+<% @pictures.each do |picture| %>
+<%  years << picture.created_at.year %>
+<%  years.sort!.uniq! %>
+<% end %>
+
+
+
+<% years.each do |year| %>
+<%picture_by_year = Picture.created_in(year)  %>
+<p> We have <%= picture_by_year.count %> pictures created in <%= year%> </p>
+  <%picture_by_year.each do |picture|  %>
+    <p><%= picture.title %>, <%= picture.artist %></p>
+  <%end   %>
+<%end%>
