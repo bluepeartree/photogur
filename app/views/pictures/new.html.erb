@@ -1,5 +1,9 @@
 <h1>Add a picture</h1>
 
+<% if @picture.errors.any?%>
+  <p>Error, unable to save picture. Please check your data and try again </p>
+<%end%>
+
 <%= link_to("Back to Pictures", "/pictures") %>
 
 <%= form_for(@picture) do |f| %>
