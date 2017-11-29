@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'sessions/new' => 'sessions#new'
+  post 'sessions/new' => 'sessions#create'
+  delete 'sessions' => 'sessions#destroy'
+
   root 'pictures#index'
   get 'pictures' => 'pictures#index'
 
@@ -13,7 +17,7 @@ Rails.application.routes.draw do
 
   get 'pictures/:id' => 'pictures#show'
 
-  resources :users
+  resource :users
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
