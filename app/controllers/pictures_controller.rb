@@ -1,4 +1,5 @@
 class PicturesController < ApplicationController
+  before_action :ensure_logged_in, except:[:show, :index]
 
   def index
     @pictures = Picture.all
@@ -20,7 +21,6 @@ class PicturesController < ApplicationController
 
   def create
     @picture = Picture.new
-
     @picture.title = params[:picture][:title]
     @picture.artist = params[:picture][:artist]
     @picture.url = params[:picture][:url]
