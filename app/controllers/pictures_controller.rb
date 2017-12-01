@@ -1,5 +1,6 @@
 class PicturesController < ApplicationController
   before_action :load_picture, only:[:show, :edit, :update, :destroy]
+  before_action :ensure_user_owns_picture, only: [:edit, :update, :destroy]
   before_action :ensure_logged_in, except:[:show, :index]
   # before_action :ensure_user_owns_picture
 
@@ -54,6 +55,10 @@ class PicturesController < ApplicationController
   end
 
   def ensure_user_owns_picture
+    unless current_user == @picture.user_id
+      flash[:alert] = "Please log in"
+      redirect_to sessions_new_url
+    end
   end
 
   def load_picture
