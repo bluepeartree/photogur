@@ -3,6 +3,11 @@ class PicturesController < ApplicationController
   before_action :ensure_user_owns_picture, only: [:edit, :update, :destroy]
   before_action :ensure_logged_in, except:[:show, :index]
   # before_action :ensure_user_owns_picture
+#
+# private
+  def picture_params
+    params.require(:picture).permit(:title, :artist, :url, :user_id)
+  end
 
   def index
     @pictures = Picture.all
@@ -20,10 +25,11 @@ class PicturesController < ApplicationController
   end
 
   def create
-    @picture          = Picture.new
-    @picture.title    = params[:picture][:title]
-    @picture.artist   = params[:picture][:artist]
-    @picture.url      = params[:picture][:url]
+    @picture = Picture.new(picture_params)
+    # @picture          = Picture.new
+    # @picture.title    = params[:picture][:title]
+    # @picture.artist   = params[:picture][:artist]
+    # @picture.url      = params[:picture][:url]
     @picture.user_id  = @current_user.id
 
     if @picture.save
@@ -39,9 +45,10 @@ class PicturesController < ApplicationController
   end
 
   def update
-    @picture.title = params[:picture][:title]
-    @picture.artist = params[:picture][:artist]
-    @picture.url = params[:picture][:url]
+    @picture.update!(picture_params)
+    # @picture.title = params[:picture][:title]
+    # @picture.artist = params[:picture][:artist]
+    # @picture.url = params[:picture][:url]
     if @picture.save
       redirect_to "/pictures/#{@picture.id}"
     else
@@ -55,7 +62,7 @@ class PicturesController < ApplicationController
   end
 
   def ensure_user_owns_picture
-    unless current_user == @picture.user_id
+    unless current_user.id == @picture.user_id
       flash[:alert] = "Please log in"
       redirect_to sessions_new_url
     end
